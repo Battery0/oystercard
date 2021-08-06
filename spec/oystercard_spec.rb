@@ -6,6 +6,9 @@ describe Oystercard do
   end
   
   let(:journey){ { Start: @station, End: @station } }
+  let(:journey_double) { double("i am a double", start_station: @station, finish_station: @station )}
+  let(:journey_double_in_only) { double("i am a double", start_station: nil, finish_station: @station )}
+  let(:journey_double_out_only) { double("i am a double", start_station: @station, finish_station: nil )}
   let(:partial_journey_in_only) { { Start: @station, End: nil } }
   let(:partial_journey_out_only) { { Start: nil, End: @station } }
 
@@ -71,7 +74,7 @@ describe Oystercard do
   end
   
   it 'expects touch_out to update deducted balance' do
-    expect{subject.touch_out(@station)}.to change{subject.balance}.by -1
+    expect{subject.touch_out(@station)}.to change{subject.balance}.by -6
   end
   
   it "checks that touch_out saves the journey" do
@@ -93,4 +96,15 @@ describe Oystercard do
     subject.touch_out(@station)
     expect(subject.journeys).to include(partial_journey_out_only)
   end
+
+
+  it 'fare method returns minimum fare for completed journey' do
+    expect(subject.fare(journey_double)).to eq Oystercard::MINIMUM_FARE
+  end
+
+  it 'fare method returns minimum fare for completed journey' do
+    expect(subject.fare(journey_double_in_only)).to eq Oystercard::PENAULTY_FARE
+    expect(subject.fare(journey_double_out_only)).to eq Oystercard::PENAULTY_FARE
+  end
+
 end

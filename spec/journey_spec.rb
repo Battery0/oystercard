@@ -9,5 +9,9 @@ describe Journey do
     expect(subject.start_station).to eq station
   end
 
-  it "saves the End station at touch out"
+  it "saves the End station at touch out" do
+    subject.finish_journey(station)
+    expect(subject.finish_station).to eq station
+  end
+
 end
