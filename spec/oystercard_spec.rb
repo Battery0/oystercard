@@ -6,6 +6,7 @@ describe Oystercard do
   end
   
   let(:journey){ { Start: @station, End: @station } }
+  let(:partial_journey) { { Start: @station, End: nil } }
 
   it 'responds to balance' do
     expect(subject).to respond_to(:balance)
@@ -72,11 +73,21 @@ describe Oystercard do
     expect{subject.touch_out(@station)}.to change{subject.balance}.by -1
   end
   
-    it "checks that touch_out saves the journey" do
+  it "checks that touch_out saves the journey" do
     subject.top_up(10)
     subject.touch_in(@station)
     subject.touch_out(@station)
     expect(subject.journeys).to include journey
   end
+
+
+
+  it 'we expect to save a partial journey' do
+    subject.top_up(10)
+    subject.touch_in(@station)
+    subject.touch_in(@station)
+    expect(subject.journeys).to include(partial_journey)
+  end
+
 
 end

@@ -22,6 +22,7 @@ class Oystercard
 
   def touch_in(station)
     raise "Balance of #{@balance} does not meet minimum fare of #{MINIMUM_FARE}" if @balance < MINIMUM_FARE
+    journey_log(@station, nil) if @station != nil
     @station = station
   end
 
