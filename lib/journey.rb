@@ -14,11 +14,7 @@ class Journey
     @finish_station = station
   end
 
-
-
   def in_journey? #Journey
     !@start_station.nil?
   end
-
-
 end 

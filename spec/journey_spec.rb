@@ -13,5 +13,4 @@ describe Journey do
     subject.finish_journey(station)
     expect(subject.finish_station).to eq station
   end
-
 end

@@ -21,7 +21,7 @@ describe Oystercard do
   end
 
   it 'checks it has no history of journeys' do
-    expect(subject.journeys).to be_empty
+    expect(subject.journeylog.journeys).to be_empty
   end
 
   it "responds to top_up" do
@@ -81,20 +81,20 @@ describe Oystercard do
     subject.top_up(10)
     subject.touch_in(@station)
     subject.touch_out(@station)
-    expect(subject.journeys).to include journey
+    expect(subject.journeylog.journeys).to include journey
   end
 
   it 'we expect to save a partial journey when failing to touch out' do
     subject.top_up(10)
     subject.touch_in(@station)
     subject.touch_in(@station)
-    expect(subject.journeys).to include(partial_journey_in_only)
+    expect(subject.journeylog.journeys).to include(partial_journey_in_only)
   end
 
   it 'we expect to save a partial journey when failling to touch in' do
     subject.top_up(10)
     subject.touch_out(@station)
-    expect(subject.journeys).to include(partial_journey_out_only)
+    expect(subject.journeylog.journeys).to include(partial_journey_out_only)
   end
 
 
@@ -106,5 +106,9 @@ describe Oystercard do
     expect(subject.fare(journey_double_in_only)).to eq Oystercard::PENAULTY_FARE
     expect(subject.fare(journey_double_out_only)).to eq Oystercard::PENAULTY_FARE
   end
+
+  # it 'formats a completed journey and logs it' do
+  #   expect{ subject.log }.to change{ subject.journeys }.by 1
+  # end
 
 end
